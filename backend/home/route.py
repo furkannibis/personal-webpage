@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 
 from general.get_db import get_curr
 
-from home.sql import GETTITLE, GETNAVBARITEMS
+from home.sql import GETTITLE, GETNAVBARITEMS, GETJOBS
 
 home_router = APIRouter()
 
@@ -20,3 +20,10 @@ async def get_navbar():
         curr.execute(GETNAVBARITEMS)
         navbarItems = curr.fetchall()
     return JSONResponse(content=navbarItems)
+
+@home_router.get("/jobs", status_code=status.HTTP_200_OK)
+async def get_job():
+    with get_curr() as curr:
+        curr.execute(GETJOBS)
+        jobs = curr.fetchall()
+    return JSONResponse(content=jobs)

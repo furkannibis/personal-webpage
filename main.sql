@@ -39,3 +39,27 @@ FROM title;
 UPDATE title
 SET HEADER = 'Furkan İBİŞ'
 WHERE id = 1;
+
+DROP TABLE JOBS;
+DROP TABLE employees;
+
+CREATE TABLE jobs(
+	job_id SERIAL PRIMARY KEY,
+	job_name VARCHAR(50) NOT NULL,
+	created_at DATE DEFAULT NOW(),
+	UNIQUE(job_name)
+);
+
+INSERT INTO jobs(job_name)
+VALUES
+	('Cyber Security Learner'),
+	('Artificial Intelligence Learner'),
+	('Full Stack Web Developer');
+
+
+
+
+
+
+
+

@@ -32,3 +32,20 @@ export async function GetNavbarItems(): Promise<[]> {
         return [];
     }
 }
+
+export async function GetJobs(): Promise<[]> {
+    try {
+        const response = await fetch(`${IP}/jobs`);
+        
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        } else {
+            console.log("Henüz Gelmedi");
+            return [];
+        }
+    } catch (error) {
+        console.log("Hata", error);
+        return [];
+    }
+}
