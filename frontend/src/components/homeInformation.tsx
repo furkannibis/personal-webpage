@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { GetJobs } from "../functions";
 import { Jobs } from "../interfaces";
+import { LoadingCircle } from "./loading";
 
 function writeJobs(jobsArray: string[]) {
     let currentJobIndex = 0;
@@ -36,16 +37,28 @@ function writeJobs(jobsArray: string[]) {
     typeWriter();
 }
 
-export const HomeInformation = () => {
+export const HomeInformation: React.FC = () => {
     const [homeJobs, setHomeJobs] = useState<Jobs[]>([]);
+    const [loadingJobs, setLoadingJobs] = useState(true);
+    const [jobsError, setJobsError] = useState(false);
     const jobsInitialized = useRef(false);
 
-    useEffect(() => {
-        const fetchJobs = async () => {
+    const fetchJobs = async () => {
+        try {
             const jobs = await GetJobs();
-            console.log(jobs);
-            setHomeJobs(jobs);
-        };
+            if (jobs.length > 0) {
+                setHomeJobs(jobs);
+                setLoadingJobs(false);
+            } else {
+                setTimeout(fetchJobs, 2000);  // 2 saniye sonra tekrar dene
+            }
+        } catch (error) {
+            setJobsError(true);
+            setTimeout(fetchJobs, 2000);  // 2 saniye sonra tekrar dene
+        }
+    };
+
+    useEffect(() => {
         fetchJobs();
     }, []);
 
@@ -58,17 +71,18 @@ export const HomeInformation = () => {
     }, [homeJobs]);
 
     return (
-        <>
-            <div className="h-full flex flex-col items-center justify-center">
-                <p className="text-zinc-300 text-[40px] mb-5 uppercase">Furkan İBİŞ</p>
-                <p className="text-zinc-300 text-[30px]">
-                    I AM A
-                    <span className="italic font-thin text-zinc-600"> &lt;code&gt;</span>
-                    <span id="job" className="text-amber-400 uppercase"></span>|
-                    <span className="italic font-thin text-zinc-600">&lt;/code&gt;</span>
-                    .
-                </p>
-            </div>
-        </>
+        <div className="h-full flex flex-col items-center justify-center">
+            <p className="text-zinc-300 text-[40px] mb-5 uppercase">Furkan İBİŞ</p>
+            <p className="text-zinc-300 text-[30px]">
+                I AM A
+                <span className="italic font-thin text-zinc-600"> &lt;code&gt;</span>
+                <span id="job" className="text-amber-400 uppercase">{loadingJobs && <LoadingCircle />}</span>|
+                <span className="italic font-thin text-zinc-600">&lt;/code&gt;</span>
+                .
+            </p>
+            <a href="/documents/cv.pdf" target="_blank" className="mt-5 italic font-thin text-zinc-300 hover:underline hover:text-amber-400">Check my resume</a>
+            
+            {jobsError && !loadingJobs && <p className="text-red-500">Error loading jobs</p>}
+        </div>
     );
-}
+};
