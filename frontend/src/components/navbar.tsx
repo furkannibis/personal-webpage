@@ -18,11 +18,11 @@ export const Navbar: React.FC = () => {
                 setHeaderText(title);
                 setLoadingHeader(false);
             } else {
-                setTimeout(fetchHeaderText, 2000);  // 2 saniye sonra tekrar dene
+                setTimeout(fetchHeaderText, 2000);
             }
         } catch (error) {
             setHeaderError(true);
-            setTimeout(fetchHeaderText, 2000);  // 2 saniye sonra tekrar dene
+            setTimeout(fetchHeaderText, 2000);
         }
     };
 
@@ -33,11 +33,11 @@ export const Navbar: React.FC = () => {
                 setNavbarItems(items);
                 setLoadingNavbar(false);
             } else {
-                setTimeout(fetchNavbarItems, 2000);  // 2 saniye sonra tekrar dene
+                setTimeout(fetchNavbarItems, 2000);
             }
         } catch (error) {
             setNavbarError(true);
-            setTimeout(fetchNavbarItems, 2000);  // 2 saniye sonra tekrar dene
+            setTimeout(fetchNavbarItems, 2000);
         }
     };
 

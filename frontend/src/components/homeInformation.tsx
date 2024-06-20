@@ -50,11 +50,11 @@ export const HomeInformation: React.FC = () => {
                 setHomeJobs(jobs);
                 setLoadingJobs(false);
             } else {
-                setTimeout(fetchJobs, 2000);  // 2 saniye sonra tekrar dene
+                setTimeout(fetchJobs, 2000);
             }
         } catch (error) {
             setJobsError(true);
-            setTimeout(fetchJobs, 2000);  // 2 saniye sonra tekrar dene
+            setTimeout(fetchJobs, 2000);
         }
     };
 
